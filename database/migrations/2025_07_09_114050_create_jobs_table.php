@@ -11,9 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_role', function (Blueprint $table) {
+        Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('tittle');
+            $table->string('employer');
+            $table->string('description');
+            $table->integer('positions');
+            $table->integer('category_id');
+            $table->timestamp('start_application_date');
+            $table->timestamp('end_application_date');
             $table->timestamps();
         });
     }
@@ -23,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_role');
+        Schema::dropIfExists('jobs');
     }
 };
