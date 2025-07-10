@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('employer');
             $table->string('description');
             $table->integer('positions');
-            $table->integer('category_id');
+            $table->foreignId('job_category_id')->constrained('job_categories');
             $table->timestamp('start_application_date');
             $table->timestamp('end_application_date');
             $table->timestamps();
