@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\JobStoreRequest;
+use App\Models\Job;
 
 class JobController extends Controller
 {
