@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use http\Message;
 use Illuminate\Http\Request;
-use App\Http\Requests\JobStoreRequest;
 use App\Models\Job;
 
 class JobController extends Controller
@@ -13,7 +13,8 @@ class JobController extends Controller
      */
     public function index()
     {
-        
+        $jobs = Job::all();
+        return response(['job' => $jobs, 'Message' => 'Here are all the Jobs'], 200);
     }
 
     /**
@@ -21,29 +22,34 @@ class JobController extends Controller
      */
     public function create()
     {
-        //
+        //Here is where the create View is Returned.
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(JobStoreRequest $request)
+    public function store(Request $request)
     {
-        $job = new Job(); 
-        $job->title = $request->title;
-        $job->employer = $request->employer;
-        $job->positions = $request->positions;
-        $job->description = $request->description;
-        $job->Category_id = $request->Category_id;
-        $job->save();
+        $data = $request->validate([
+            'title' => ['required', 'string',],
+            'employer_id' => ['required', 'string'],
+            'positions' => ['required', 'integer'],
+            'description' => ['required', 'string'],
+            'category_id' => ['required', 'integer']
+        ]);
+
+        $job = Job::query()->create($data);
+        return response($job, 200);
+
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Job $job)
     {
-        //
+        return response(['job' => $job, 'message' => 'This is the fetched Item'], 200);
     }
 
     /**
@@ -51,7 +57,7 @@ class JobController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        //The edit view is returned here
     }
 
     /**
@@ -59,14 +65,30 @@ class JobController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string',],
+            'employer_id' => ['required', 'string'],
+            'positions' => ['required', 'integer'],
+            'description' => ['required', 'string'],
+            'category_id' => ['required', 'integer']
+        ]);
+
+        $job = Job::findOrFail($id);
+        $job->title = $request->title;
+        $job->employer = $request->employer;
+        $job->positions = $request->positions;
+        $job->description = $request->description;
+        $job->Category_id = $request->Category_id;
+        $job->save();
+        return response($job,200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Job $job)
     {
-        //
+        $job->delete();
+        return response(['message' => 'Item Deleted'], 200);
     }
 }
